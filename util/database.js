@@ -2,10 +2,10 @@ const { Pool } = require('pg')
 const creds = require("../creds.json")
 
 const pool = new Pool({
-    host: '3380db.cs.uh.edu',
+    host: creds.host,
     user: creds.username,
     password: creds.password,
-    database: 'COSC3380',
+    database: creds.database,
     port: 5432
 })
 
@@ -16,8 +16,3 @@ pool.on('error', (err, client) => {
 })
 
 module.exports = pool
-
-//Exporting "promise()" allows you to work on data without callback functions
-//  but instead through ".then()" and ".catch()" statements for cleaner code;
-//  "promise()" returns an object
-// module.exports = pool.promise()
