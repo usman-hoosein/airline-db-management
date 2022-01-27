@@ -1,5 +1,6 @@
 1. Copy/paste the queries from queries-create-table.txt onto a RDBMS
-2. Open a terminal/command-prompt, locate this project's directory, and run the command:
+2. Enter your credentials in creds.json
+3. Open a terminal/command-prompt, locate this project's directory, and run the command:
 npm install express ejs body-parser express-handlebars pg nodemon
 3. In the same terminal/command-prompt, run the command:
 npm start
