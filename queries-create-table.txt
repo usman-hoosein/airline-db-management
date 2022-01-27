@@ -1,0 +1,113 @@
+CREATE TABLE employee_info (
+	ssn varchar(13) PRIMARY KEY,
+    emp_id varchar(10) UNIQUE,
+    fullname text,
+    date_of_birth text,
+    address text,
+	phone_number text,
+    sex varchar(7),
+    email text
+);
+
+CREATE TABLE positions (
+	pos_id varchar(10) PRIMARY KEY,
+    pos_name varchar(20),
+    pay_rate decimal,
+    overtime_pay_rate decimal
+);
+
+CREATE TABLE field (
+	field_id varchar(10) PRIMARY KEY,
+    field_name varchar(20)
+);
+
+CREATE TABLE locations (
+	loca_code varchar(10) PRIMARY KEY,
+    loca_name varchar(20),
+    street_address text,
+    city text,
+    state text
+);
+
+CREATE TABLE assignments (
+	assignment_id varchar(10) PRIMARY KEY,
+    emp_id varchar(10) NOT NULL,
+    pos_id varchar(10) NOT NULL REFERENCES positions(pos_id)
+	ON DELETE CASCADE,
+    field_id varchar(10) NOT NULL REFERENCES field(field_id)
+	ON DELETE CASCADE,
+    loca_code varchar(10) NOT NULL REFERENCES locations(loca_code)
+	ON DELETE CASCADE,
+    start_date text,
+    end_date text,
+    FOREIGN KEY (emp_id) REFERENCES employee_info(emp_id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE monthly_hours (
+	month varchar(25),
+    year int,
+    emp_id varchar(10) REFERENCES employee_info(emp_id) ON DELETE CASCADE,
+    pos_id varchar(10) NOT NULL REFERENCES positions(pos_id) ON DELETE CASCADE,
+    reg_hours int,
+    overtime_hours int,
+    sick_leave_hours int,
+    tax_rate decimal,
+    paycheck_id varchar(10) UNIQUE,
+    PRIMARY KEY (month, year, emp_id)
+);
+
+CREATE TABLE monthly_salary (
+    paycheck_id varchar(10) PRIMARY KEY REFERENCES monthly_hours(paycheck_id)
+		ON DELETE CASCADE,
+    gross_pay decimal,
+    deductions decimal,
+    net_pay decimal
+);
+
+CREATE TABLE vacation (
+	vacation_id varchar(10) PRIMARY KEY,
+    emp_id varchar(10) NOT NULL REFERENCES employee_info(emp_id)
+    ON DELETE CASCADE,
+    num_of_days int,
+    start_date text,
+    end_date text
+);
+
+CREATE TABLE "benefits" (
+  "benf_code" varchar(10),
+  "benf_name" varchar(50),
+  PRIMARY KEY ("benf_code")
+);
+
+CREATE TABLE "benefits_applied" (
+  "emp_id" varchar(10) NOT NULL,
+  "benf_code" varchar(10) NOT NULL,
+  "date_applied" text,
+  PRIMARY KEY ("emp_id", "benf_code"),
+  CONSTRAINT "FK_benefit_applied.benf_code"
+    FOREIGN KEY ("benf_code")
+      REFERENCES "benefits"("benf_code")
+        ON DELETE CASCADE,
+  CONSTRAINT "FK_benefit_applied.emp_id"
+    FOREIGN KEY ("emp_id")
+      REFERENCES "employee_info"("emp_id")
+        ON DELETE CASCADE
+);
+
+CREATE TABLE flights (
+	flight_id varchar(10) PRIMARY KEY,
+	model text,
+    dest_loca_code varchar(10) REFERENCES locations(loca_code)
+		ON DELETE CASCADE
+);
+
+CREATE TABLE flight_assignments (
+	emp_id varchar(10) REFERENCES employee_info(emp_id)
+		ON DELETE CASCADE,
+    flight_id varchar(10) REFERENCES flights(flight_id)
+		ON DELETE CASCADE,
+    start_date text,
+    end_date text,
+    PRIMARY KEY (emp_id, flight_id)
+);

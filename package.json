@@ -1,0 +1,23 @@
+{
+  "name": "hw3-web-server",
+  "version": "1.0.0",
+  "description": "Web Server for HW3",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "start-server": "nodemon app.js"
+  },
+  "author": "Usman Hoosein",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^2.7.4",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "pg": "^8.7.1"
+  }
+}

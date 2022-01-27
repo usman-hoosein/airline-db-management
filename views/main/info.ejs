@@ -1,0 +1,65 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <main>
+                <h1 class="product__title">
+                    <%= pageTitle %>
+                </h1>
+                <% if (!salary) { %>
+                    <div class="btn__form">
+                        <a href="/add/?table=<%=table%>&headers=<%=headers%>&edit=false" class="btn">Add</a>
+                    </div>
+                <% } %>
+                <div>
+                    <% if (info.length> 0) { %>
+                        <table class="table mt-5 text-center" id="emp-list" style="border-collapse: separate;border-spacing: 1pc;">
+                            <thead>
+                                <tr>
+                                    <% for (let header of displayHeaders) { %>
+                                        <th>
+                                            <%=header%>
+                                        </th>
+                                    <% } %>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let row of info) { %>
+                                    <tr>
+                                        <% let i = 0, pkValues = "", client %>
+                                        <% for (let cell of row) { %>
+                                            <td>
+                                                <%=cell%>
+                                            </td>
+                                            <% if (i < pkSize) { %>
+                                                <% if (i == 0) { %>
+                                                    <%pkValues += cell%>
+                                                <% } %>
+                                                <% if (i != 0) {%>
+                                                    <%pkValues += "," + cell %>
+                                                <% } %>
+                                            <% } %>
+                                            <%i++%>
+                                        <% } %>
+                                        <div class="card__actions">
+                                            <% if (!salary) { %>
+                                                <td>
+                                                    <a href="/edit/<%=pkValues%>?table=<%=table%>&pk=<%=pk%>&pkSize=<%=pkSize%>&edit=true>" class="btn">Edit</a>
+                                                </td>
+                                                <td>
+                                                    <a href="/delete/<%=pkValues%>?table=<%=table%>&pk=<%=pk%>&pkSize=<%=pkSize%>" class="btn">Delete</a>
+                                                </td>
+                                            <% } %>
+                                        </div>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                        <% } else { %>
+                            <h1>EMPTY TABLE!</h1>
+                            <% } %>
+                </div>
+            </main>
+            <%- include('../includes/end.ejs') %>
